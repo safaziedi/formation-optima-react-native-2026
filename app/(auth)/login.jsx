@@ -77,6 +77,15 @@ export default function Login() {
           resizeMode="cover"
         >
           <View style={styles.darkOverlay}>
+            {/* --- BOUTON RETOUR --- */}
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => router.back()}
+            >
+              <Ionicons name="chevron-back" size={28} color="#fff" />
+            </TouchableOpacity>
+            {/* --------------------- */}
+
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
               style={styles.contentContainer}
@@ -226,7 +235,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 1,
   },
-
+  // Style pour le bouton Retour
+  backButton: {
+    position: "absolute",
+    top: Platform.OS === "ios" ? 60 : 40, // S'adapte à la barre de statut
+    left: 20,
+    zIndex: 10,
+    padding: 10,
+    backgroundColor: "rgba(255,255,255,0.15)", // Effet de verre léger
+    borderRadius: 15,
+  },
   inputWrapper: {
     flexDirection: "row",
     alignItems: "center",
