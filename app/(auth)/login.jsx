@@ -22,7 +22,7 @@ import api from "../../api/callapi";
 
 const { width, height } = Dimensions.get("window");
 const CUISINE_IMAGE =
-  "https://images.unsplash.com/photo-1598511757337-fe2cafc31ba0?q=80&w=1000";
+  "https://images.unsplash.com/photo-1506368249639-73a05d6f6488?q=80&w=1000";
 
 export default function Login() {
   const router = useRouter();
