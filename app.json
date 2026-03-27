@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "books-app",
-    "slug": "books-app",
+    "name": "quickbite",
+    "slug": "quickbite",
     "version": "1.0.0",
     "scheme": "mon-app-unique",
     "orientation": "portrait",

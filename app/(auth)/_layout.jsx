@@ -1,15 +1,17 @@
-import React from "react";
-import { StatusBar } from "expo-status-bar";
 import { Stack } from "expo-router";
 
-const AuthLayout = () => {
+export default function AuthLayout() {
   return (
-    <>
-      {/* pour afficher l'heure , batterie , wifi ... */}
-      <StatusBar style="auto" />
-      <Stack screenOptions={{ headerShown: false, animation: "none" }}></Stack>
-    </>
+    <Stack
+      screenOptions={{
+        headerShown: true,
+        headerTitle: "",
+        headerTransparent: true,
+        headerTintColor: "#fff",
+      }}
+    >
+      <Stack.Screen name="login" />
+      <Stack.Screen name="register" />
+    </Stack>
   );
-};
-
-export default AuthLayout;
+}

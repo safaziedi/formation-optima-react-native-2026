@@ -1,216 +1,160 @@
-import { Link } from "expo-router";
-import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import useAuthStore from "../../store/authStore";
-import { useMutation } from "@apollo/client/react";
-import { Alert } from "react-native";
-import LOGIN_MUTATION from "./../../graphql/mutations/login";
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+import React from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Dimensions, KeyboardAvoidingView, Platform, StatusBar } from "react-native";
+import { Link, useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { BlurView } from 'expo-blur'; // Verrrry Important: npx expo install expo-blur
 
-  const setAuth = useAuthStore((state) => state.setAuth);
+// Get screen dimensions for perfect scaling
+const { width, height } = Dimensions.get('window');
 
-  const [loginMutation, { loading }] = useMutation(LOGIN_MUTATION, {
-    onCompleted: (data) => {
-      if (data.login.accessToken) {
-        setAuth({
-          accessToken: data.login.accessToken,
-          email: email,
-        });
-      }
-    },
-    onError: (error) => {
-      Alert.alert("Erreur", error.message || "Identifiants invalides");
-    },
-  });
+// Premium image from Unsplash (rustic/appetizing cuisine)
+const CUISINE_IMAGE = 'https://images.unsplash.com/photo-1598511757337-fe2cafc31ba0?q=80&w=1000';
 
-  const handleSubmit = async () => {
-    if (!email || !password) {
-      Alert.alert("Champs vides", "Veuillez remplir tous les champs");
-      return;
-    }
-    await loginMutation({
-      variables: { email, password },
-    });
-  };
+export default function VerrryFancyLogin() {
+  const router = useRouter();
+
   return (
-    //TouchableWithoutFeedback  pour fermer clavier si on press ailleur
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.inner}
-        >
-          {/* Logo ou Cercle Décoratif */}
-          <View style={styles.logoContainer}>
-            <View style={styles.circleDecoration} />
-            <Text style={styles.welcomeText}>Bon retour !</Text>
-            <Text style={styles.subtitle}>Connectez-vous pour continuer</Text>
-          </View>
-
-          {/* Formulaire */}
-          <View style={styles.formContainer}>
-            <View style={styles.inputWrapper}>
-              <Text style={styles.inputLabel}>Email</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="votre@email.com"
-                placeholderTextColor="#94a3b8"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                value={email}
-                onChangeText={setEmail}
-              />
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      <ImageBackground 
+        source={{ uri: CUISINE_IMAGE }} 
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        {/* Dark overlay for text readability and premium feel */}
+        <View style={styles.darkOverlay}>
+          
+          <KeyboardAvoidingView 
+            behavior={Platform.OS === "ios" ? "padding" : "height"} 
+            style={styles.contentContainer}
+          >
+            
+            {/* 1. TOP BRANDING AREA */}
+            <View style={styles.header}>
+              <View style={styles.iconCircle}>
+                <Ionicons name="restaurant" size={35} color="#FF6B6B" />
+              </View>
+              <Text style={styles.brandTitle}>QuickBite</Text>
+              <Text style={styles.brandTagline}>L'Art de Bien Manger, Rapidement.</Text>
             </View>
 
-            <View style={styles.inputWrapper}>
-              <Text style={styles.inputLabel}>Mot de passe</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="••••••••"
-                placeholderTextColor="#94a3b8"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-              />
-              <TouchableOpacity style={styles.forgotPassword}>
-                <Text style={styles.forgotText}>Oublié ?</Text>
-              </TouchableOpacity>
+            {/* 2. THE GLASSMORPHISM FORM (Refined Glass effect) */}
+            <View style={styles.formContainer}>
+              {/* BlurView provides the frosty glass effect */}
+              <BlurView intensity={Platform.OS === 'ios' ? 40 : 80} tint="dark" style={styles.blurView}>
+                
+                <Text style={styles.welcomeText}>Connexion</Text>
+                
+                {/* Input 1: Email */}
+                <View style={styles.inputWrapper}>
+                  <Ionicons name="mail-outline" size={20} color="rgba(255,255,255,0.6)" style={styles.inputIcon} />
+                  <TextInput 
+                    placeholder="Votre Email" 
+                    placeholderTextColor="rgba(255,255,255,0.4)" 
+                    style={styles.input} 
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                  />
+                </View>
+
+                {/* Input 2: Password */}
+                <View style={styles.inputWrapper}>
+                  <Ionicons name="lock-closed-outline" size={20} color="rgba(255,255,255,0.6)" style={styles.inputIcon} />
+                  <TextInput 
+                    placeholder="Votre Mot de passe" 
+                    placeholderTextColor="rgba(255,255,255,0.4)" 
+                    secureTextEntry 
+                    style={styles.input} 
+                  />
+                </View>
+
+                {/* Submit Button (Fancy Glow/Shadow) */}
+                <TouchableOpacity style={styles.loginBtn} onPress={() => router.push('/explore')}>
+                  <Text style={styles.loginBtnText}>Déguster !</Text>
+                  <Ionicons name="chevron-forward" size={20} color="#fff" style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+
+                {/* Extra Actions */}
+                <TouchableOpacity style={styles.forgotBtn}>
+                  <Text style={styles.forgotText}>Mot de passe oublié ?</Text>
+                </TouchableOpacity>
+
+              </BlurView>
             </View>
 
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={handleSubmit}
-              disabled={loading}
-            >
-              <Text style={styles.loginButtonText}>
-                {loading ? "Connexion..." : "Se connecter"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Footer */}
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Pas encore de compte ? </Text>
-            <TouchableOpacity>
-              <Link href="/register" style={styles.signUpText}>
-                S'inscrire
+            {/* 3. FOOTER (CTA to Register) */}
+            <View style={styles.footer}>
+              <Text style={styles.noAccountText}>Pas encore membre ? </Text>
+              <Link href="/register" asChild>
+                <TouchableOpacity>
+                  <Text style={styles.signUpText}>S'inscrire</Text>
+                </TouchableOpacity>
               </Link>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
-      </View>
-    </TouchableWithoutFeedback>
+            </View>
+
+          </KeyboardAvoidingView>
+        </View>
+      </ImageBackground>
+    </View>
   );
-};
+}
 
-export default Login;
-
+/** 🎨 STYLES - Verry Fancy & Immersive **/
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-  },
-  inner: {
-    flex: 1,
-    paddingHorizontal: 30,
-    justifyContent: "center",
-  },
-  logoContainer: {
-    marginBottom: 40,
-    alignItems: "flex-start",
-  },
-  circleDecoration: {
-    width: 60,
-    height: 60,
-    borderRadius: 15,
-    backgroundColor: "#4F46E5", // Violet moderne
-    marginBottom: 20,
-    transform: [{ rotate: "45deg" }],
-  },
-  welcomeText: {
-    fontSize: 28,
-    fontWeight: "800",
-    color: "#1e293b",
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#64748b",
-    marginTop: 5,
-  },
-  formContainer: {
-    width: "100%",
-  },
+  container: { flex: 1 },
+  backgroundImage: { width: width, height: height },
+  darkOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)' }, // Deep overlay for high contrast
+  
+  contentContainer: { flex: 1, paddingHorizontal: 35, justifyContent: 'space-between', paddingVertical: 70 },
+  
+  // Header
+  header: { alignItems: 'center', marginTop: 30 },
+  iconCircle: { width: 75, height: 75, borderRadius: 37.5, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center', marginBottom: 20 },
+  brandTitle: { color: '#fff', fontSize: 34, fontWeight: '900', letterSpacing: 2.5, textTransform: 'uppercase' },
+  brandTagline: { color: 'rgba(255,255,255,0.7)', fontSize: 13, marginTop: 8, fontWeight: '500' },
+
+  // Form (Glassmorphism)
+  formContainer: { borderRadius: 30, overflow: 'hidden' }, // Crucial for BlurView corners
+  blurView: { padding: 30, borderRadius: 30 },
+  
+  welcomeText: { color: '#fff', fontSize: 26, fontWeight: '800', marginBottom: 35, textAlign: 'center', letterSpacing: 1 },
+  
   inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.08)', // Very transparent input bg
+    borderRadius: 18,
     marginBottom: 20,
-  },
-  inputLabel: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#475569",
-    marginBottom: 8,
-    marginLeft: 4,
-  },
-  input: {
-    backgroundColor: "#f8fafc",
+    paddingHorizontal: 20,
+    height: 65,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    fontSize: 16,
-    color: "#1e293b",
+    borderColor: 'rgba(255,255,255,0.1)',
   },
-  forgotPassword: {
-    position: "absolute",
-    right: 15,
-    top: 38,
+  inputIcon: { marginRight: 15 },
+  input: { flex: 1, color: '#fff', fontSize: 16 },
+  
+  loginBtn: {
+    backgroundColor: '#FF6B6B',
+    height: 65,
+    borderRadius: 18,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 15,
+    // Fancy Shadow/Glow
+    shadowColor: "#FF6B6B",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.6,
+    shadowRadius: 15,
+    elevation: 10,
   },
-  forgotText: {
-    color: "#4F46E5",
-    fontWeight: "600",
-    fontSize: 12,
-  },
-  loginButton: {
-    backgroundColor: "#1e293b",
-    borderRadius: 16,
-    paddingVertical: 18,
-    alignItems: "center",
-    marginTop: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  loginButtonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 40,
-  },
-  footerText: {
-    color: "#64748b",
-    fontSize: 14,
-  },
-  signUpText: {
-    color: "#4F46E5",
-    fontSize: 14,
-    fontWeight: "700",
-  },
+  loginBtnText: { color: '#fff', fontSize: 19, fontWeight: '800', letterSpacing: 1 },
+  
+  forgotBtn: { marginTop: 25, alignSelf: 'center' },
+  forgotText: { color: 'rgba(255,255,255,0.6)', fontSize: 13 },
+
+  // Footer
+  footer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingBottom: 20 },
+  noAccountText: { color: 'rgba(255,255,255,0.8)', fontSize: 15 },
+  signUpText: { color: '#FF6B6B', fontSize: 15, fontWeight: '900' }
 });

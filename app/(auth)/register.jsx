@@ -1,217 +1,131 @@
-import { Link } from "expo-router";
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from "react-native";
+import React from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { Link, useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from 'expo-linear-gradient'; // npx expo install expo-linear-gradient
 
-const Register = () => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const { width } = Dimensions.get('window');
+
+export default function FancyRegister() {
+  const router = useRouter();
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}
-        >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
-          >
-            {/* Header Section */}
-            <View style={styles.header}>
-              <View style={styles.accentSquare} />
-              <Text style={styles.title}>Créer un compte</Text>
-              <Text style={styles.subtitle}>
-                Rejoignez notre communauté en quelques secondes.
-              </Text>
-            </View>
-
-            {/* Form Section */}
-            <View style={styles.form}>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Nom complet</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Ex: Marc Antoine"
-                  placeholderTextColor="#94a3b8"
-                  value={fullName}
-                  onChangeText={setFullName}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Adresse Email</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="votre@email.com"
-                  placeholderTextColor="#94a3b8"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  value={email}
-                  onChangeText={setEmail}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Mot de passe</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="••••••••"
-                  placeholderTextColor="#94a3b8"
-                  secureTextEntry
-                  value={password}
-                  onChangeText={setPassword}
-                />
-                <Text style={styles.passwordHint}>Minimum 8 caractères</Text>
-              </View>
-
-              <TouchableOpacity style={styles.registerButton}>
-                <Text style={styles.registerButtonText}>S'inscrire</Text>
-              </TouchableOpacity>
-
-              <View style={styles.termsContainer}>
-                <Text style={styles.termsText}>
-                  En vous inscrivant, vous acceptez nos{" "}
-                  <Text style={styles.termsLink}>Conditions d'utilisation</Text>
-                  .
-                </Text>
-              </View>
-            </View>
-
-            {/* Footer */}
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>Déjà un compte ? </Text>
-              <TouchableOpacity>
-                <Link href="/login" style={styles.loginLink}>
-                  Se connecter
-                </Link>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+    <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
+      {/* 1. TOP IMAGE AREA WITH GRADIENT OVERLAY */}
+      <View style={styles.imageContainer}>
+        <Image 
+          source={{ uri: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1000' }} 
+          style={styles.topImage}
+        />
+        <LinearGradient
+          colors={['transparent', 'rgba(255,255,255,1)']}
+          style={styles.gradient}
+        />
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <Ionicons name="chevron-back" size={28} color="#1e293b" />
+        </TouchableOpacity>
       </View>
-    </TouchableWithoutFeedback>
-  );
-};
 
-export default Register;
+      {/* 2. HEADER TEXT */}
+      <View style={styles.header}>
+        <Text style={styles.welcomeTitle}>Créer un Profil</Text>
+        <Text style={styles.welcomeSubtitle}>Rejoignez la table et commencez à cuisiner.</Text>
+      </View>
+
+      {/* 3. FLOATING FORM CARD */}
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.formCard}>
+        
+        {/* Input: Nom */}
+        <View style={styles.inputBox}>
+          <Text style={styles.label}>Nom Complet</Text>
+          <View style={styles.inputWrapper}>
+            <Ionicons name="person-outline" size={20} color="#FF6B6B" />
+            <TextInput placeholder="Chef Nom" style={styles.input} />
+          </View>
+        </View>
+
+        {/* Input: Email */}
+        <View style={styles.inputBox}>
+          <Text style={styles.label}>Email</Text>
+          <View style={styles.inputWrapper}>
+            <Ionicons name="mail-outline" size={20} color="#FF6B6B" />
+            <TextInput placeholder="chef@example.com" style={styles.input} keyboardType="email-address" />
+          </View>
+        </View>
+
+        {/* Input: Password */}
+        <View style={styles.inputBox}>
+          <Text style={styles.label}>Mot de passe</Text>
+          <View style={styles.inputWrapper}>
+            <Ionicons name="lock-closed-outline" size={20} color="#FF6B6B" />
+            <TextInput placeholder="••••••••" secureTextEntry style={styles.input} />
+          </View>
+        </View>
+
+        {/* Fancy Register Button */}
+        <TouchableOpacity style={styles.registerBtn}>
+          <LinearGradient
+            colors={['#FF6B6B', '#FF8E8E']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.gradientBtn}
+          >
+            <Text style={styles.registerBtnText}>S'inscrire</Text>
+            <Ionicons name="restaurant-outline" size={20} color="#fff" style={{ marginLeft: 10 }} />
+          </LinearGradient>
+        </TouchableOpacity>
+
+        {/* Footer Link */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Déjà un gourmet ? </Text>
+          <Link href="/login" asChild>
+            <TouchableOpacity><Text style={styles.linkText}>Se connecter</Text></TouchableOpacity>
+          </Link>
+        </View>
+
+      </KeyboardAvoidingView>
+      <View style={{ height: 50 }} />
+    </ScrollView>
+  );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-  },
-  scrollContent: {
-    paddingHorizontal: 30,
-    paddingTop: 40,
-    paddingBottom: 20,
-  },
-  header: {
-    marginBottom: 40,
-  },
-  accentSquare: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: "#10B981", // Vert émeraude pour différencier du Login
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "800",
-    color: "#1e293b",
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#64748b",
-    marginTop: 8,
-    lineHeight: 22,
-  },
-  form: {
-    width: "100%",
-  },
-  inputContainer: {
-    marginBottom: 22,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#334155",
-    marginBottom: 8,
-    marginLeft: 4,
-  },
-  input: {
-    backgroundColor: "#F1F5F9",
-    borderRadius: 16,
-    paddingHorizontal: 18,
-    paddingVertical: 15,
-    fontSize: 16,
-    color: "#1e293b",
+  container: { flex: 1, backgroundColor: '#fff' },
+  
+  // Image Section
+  imageContainer: { width: width, height: 300 },
+  topImage: { width: '100%', height: '100%' },
+  gradient: { position: 'absolute', bottom: 0, left: 0, right: 0, height: 150 },
+  backButton: { position: 'absolute', top: 50, left: 20, backgroundColor: '#fff', borderRadius: 12, padding: 8, elevation: 5 },
+
+  // Header
+  header: { paddingHorizontal: 30, marginBottom: 30 },
+  welcomeTitle: { fontSize: 36, fontWeight: '900', color: '#1e293b' },
+  welcomeSubtitle: { fontSize: 16, color: '#64748b', marginTop: 8, fontWeight: '500' },
+
+  // Form Card
+  formCard: { paddingHorizontal: 30 },
+  inputBox: { marginBottom: 20 },
+  label: { fontSize: 14, fontWeight: '700', color: '#1e293b', marginBottom: 8, marginLeft: 4 },
+  inputWrapper: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    backgroundColor: '#f8fafc', 
+    borderRadius: 20, 
+    paddingHorizontal: 20, 
+    height: 65,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: '#f1f5f9'
   },
-  passwordHint: {
-    fontSize: 11,
-    color: "#94a3b8",
-    marginTop: 6,
-    marginLeft: 4,
-  },
-  registerButton: {
-    backgroundColor: "#10B981",
-    borderRadius: 16,
-    paddingVertical: 18,
-    alignItems: "center",
-    marginTop: 10,
-    shadowColor: "#10B981",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  registerButtonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  termsContainer: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  termsText: {
-    fontSize: 12,
-    color: "#94a3b8",
-    textAlign: "center",
-    lineHeight: 18,
-  },
-  termsLink: {
-    color: "#10B981",
-    fontWeight: "600",
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 35,
-    marginBottom: 20,
-  },
-  footerText: {
-    color: "#64748b",
-    fontSize: 14,
-  },
-  loginLink: {
-    color: "#10B981",
-    fontSize: 14,
-    fontWeight: "700",
-  },
+  input: { flex: 1, marginLeft: 15, fontSize: 16, color: '#1e293b' },
+
+  // Button
+  registerBtn: { height: 65, borderRadius: 20, marginTop: 10, overflow: 'hidden', elevation: 8, shadowColor: '#FF6B6B', shadowOpacity: 0.3, shadowRadius: 10 },
+  gradientBtn: { flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' },
+  registerBtnText: { color: '#fff', fontSize: 18, fontWeight: '800' },
+
+  // Footer
+  footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 30 },
+  footerText: { color: '#64748b', fontSize: 15 },
+  linkText: { color: '#FF6B6B', fontWeight: '800' }
 });

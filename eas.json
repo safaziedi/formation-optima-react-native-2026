@@ -13,7 +13,7 @@
       "distribution": "internal",
       "env": {
         "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
-        "EXPO_PUBLIC_GRAPHQL_API_URL": "https://apimovogo.persistatechnology.com/graphql"
+        "EXPO_PUBLIC_API_URL": ""
       },
       "channel": "production-apk"
     },
@@ -21,7 +21,7 @@
       "autoIncrement": true,
       "env": {
         "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
-        "EXPO_PUBLIC_GRAPHQL_API_URL": "https://apimovogo.persistatechnology.com/graphql"
+        "EXPO_PUBLIC_API_URL": ""
       },
       "channel": "production",
       "android": {
