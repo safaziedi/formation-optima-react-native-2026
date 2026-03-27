@@ -52,8 +52,6 @@ export default function Home() {
             time="20 min"
             img="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400"
           />
-          {/* to delete */}
-          <Link href="/explore">explore</Link> 
         </ScrollView>
       </View>
     </View>

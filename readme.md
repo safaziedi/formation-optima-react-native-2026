@@ -24,7 +24,7 @@ Create a file named `.env` in the root directory:
 ```bash
 touch .env
 ```
-Inside `.env`, add your backend URL. 
+Inside `.env`, add your backend URL ou changer le directement dans BASE_URL dans callapi.js
 
 > **CRITICAL:** If you are testing on a physical phone, you **cannot** use `localhost`. You must use your computer's **Local IPv4 Address**.
 

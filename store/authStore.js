@@ -6,7 +6,7 @@ const useAuthStore = create((set) => ({
 
   // Action appelée après le succès du login
   setAuth: (data) => set({ 
-    token: data.accessToken, 
+    token: data.token, 
     user: { email: data.email },
   }),
 
