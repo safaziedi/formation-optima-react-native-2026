@@ -13,7 +13,7 @@
       "distribution": "internal",
       "env": {
         "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
-        "EXPO_PUBLIC_API_URL": ""
+        "EXPO_PUBLIC_API_URL": "http://192.168.206.114:9999"
       },
       "channel": "production-apk"
     },
@@ -21,7 +21,7 @@
       "autoIncrement": true,
       "env": {
         "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
-        "EXPO_PUBLIC_API_URL": ""
+        "EXPO_PUBLIC_API_URL": "http://192.168.206.114:9999"
       },
       "channel": "production",
       "android": {

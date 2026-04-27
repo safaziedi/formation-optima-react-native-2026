@@ -53,6 +53,11 @@ export default function Home() {
             img="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400"
           />
         </ScrollView>
+        <Link href="/about" asChild>
+          <TouchableOpacity style={styles.footerLink}>
+            <Text style={styles.footerLinkText}>À propos de QuickBite ℹ️</Text>
+          </TouchableOpacity>
+        </Link>
       </View>
     </View>
   );
@@ -74,6 +79,19 @@ const RecipeCard = ({ title, time, img }) => (
 );
 
 const styles = StyleSheet.create({
+  footerLink: {
+    marginTop: 40,            // Espace par rapport aux cartes
+    paddingVertical: 15,
+    borderTopWidth: 1,        // Une petite ligne de séparation discrète
+    borderTopColor: '#f0f0f0',
+    alignItems: 'center',     // Centre le texte
+  },
+  footerLinkText: {
+    color: '#666',            // Couleur grise pour rester discret
+    fontSize: 14,
+    fontWeight: '600',
+    textDecorationLine: 'underline', // Donne un aspect "lien" classique
+  },
   container: { flex: 1, backgroundColor: "#fff" },
   hero: { width: "100%", height: 500 },
   overlay: {

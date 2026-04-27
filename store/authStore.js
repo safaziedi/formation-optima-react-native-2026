@@ -1,16 +1,17 @@
 import { create } from 'zustand';
 
 const useAuthStore = create((set) => ({
-  user: null,
+  name: null,
+  email: null,
   token: null,
 
-  // Action appelée après le succès du login
   setAuth: (data) => set({ 
     token: data.token, 
-    user: { email: data.email },
+    email: data.email, 
+    name: data.name, 
   }),
 
-  logout: () => set({ user: null, token: null }),
+  logout: () => set({ email: null, token: null , name: null }),
 }));
 
 export default useAuthStore;

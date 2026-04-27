@@ -26,7 +26,7 @@ export default function Register() {
   const router = useRouter();
 
   // 3. States pour le formulaire
-  const [fullname, setFullname] = useState("");
+  const [name, setname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ export default function Register() {
   // 4. Fonction d'inscription
   const handleRegister = async () => {
     // Validation basique
-    if (!fullname || !email || !password) {
+    if (!name || !email || !password) {
       Alert.alert(
         "Champs manquants",
         "Veuillez remplir toutes les informations pour créer votre compte.",
@@ -46,7 +46,7 @@ export default function Register() {
 
     try {
       const response = await api.post("/user/create", {
-        fullname: fullname,
+        name: name,
         email: email,
         password: password,
       });
@@ -117,8 +117,8 @@ export default function Register() {
               <TextInput
                 placeholder="Chef Nom"
                 style={styles.input}
-                value={fullname}
-                onChangeText={setFullname}
+                value={name}
+                onChangeText={setname}
               />
             </View>
           </View>

@@ -19,6 +19,7 @@ import { Link, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import api from "../../api/callapi";
+import useAuthStore from "../../store/authStore";
 
 const { width, height } = Dimensions.get("window");
 const CUISINE_IMAGE =
@@ -29,6 +30,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // Pour afficher un spinner pendant l'appel
+  const { setAuth } = useAuthStore.getState();
+
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert(
@@ -49,7 +52,11 @@ export default function Login() {
       // Si ton backend renvoie un succès (et un token par exemple)
       if (response.status === 200 || response.status === 201) {
         console.log("Succès:", response.data);
-
+        setAuth({
+          token: response.data.token,
+          email: response.data.email,
+          name : response.data.name,
+        });
         // Redirection vers la page explore (dans le groupe dashboard)
         // Note: Expo Router gère le chemin relatif
         router.push("/explore");
